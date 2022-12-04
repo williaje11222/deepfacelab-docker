@@ -22,19 +22,25 @@ LABEL description="DeepFaceLab GPU Container w/ Jupyter Notebooks"
 # $ docker push xychelsea/deepfacelab:latest-gpu-jupyter
 
 ENV ANACONDA_ENV=deepfacelab
-ENV DEEPFACELAB_PATH=/usr/local/deepfacelab
+ENV DEEPFACELAB_PATH=/usr/local/notebooks/deepfacelab
 ENV DEEPFACELAB_PYTHON=python3.7
-ENV DEEPFACELAB_HOME=${HOME}/deepfacelab
+ENV DEEPFACELAB_HOME=${HOME}/notebooks/deepfacelab
 ENV DEEPFACELAB_WORKSPACE=${DEEPFACELAB_PATH}/workspace
 ENV DEEPFACELAB_SCRIPTS=${DEEPFACELAB_PATH}/scripts
 
 # Start as root
 USER root
 
+
+# nvidia key
+RUN rm /etc/apt/sources.list.d/cuda.list
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+
 # Update packages
 RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
     && apt-get -y dist-upgrade
+    
 
 # Install dependencies
 RUN apt-get -y install \
